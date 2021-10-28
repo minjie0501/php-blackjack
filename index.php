@@ -11,7 +11,8 @@ require 'Blackjack.php';
 
 session_start();
 
-unset($_SESSION['blackjack']);
+
+//unset($_SESSION['blackjack']); // NOTE: delete this
 function whatIsHappening()
 {
     echo '<h2>$_GET</h2>';
@@ -24,39 +25,58 @@ function whatIsHappening()
     var_dump($_SESSION);
 }
 
-whatIsHappening();
+// whatIsHappening();
 
 if (!isset($_SESSION['blackjack'])) {
     $object = new Blackjack();
     $_SESSION['blackjack'] = serialize($object);
-}else{
+} else {
     $object = unserialize($_SESSION['blackjack']);
 }
 
-var_dump($object->getDealer());
-var_dump($object->getPlayer());
-var_dump($object->getPlayer()->getScore());
+$currentDeck = $object->getDeck();
+$player = $object->getPlayer();
 
-foreach($object->getDeck()->getCards() AS $card) {
-    // echo $card;
-    echo $card->getUnicodeCharacter(true);
-    echo '<br>';
-}
+
+// var_dump($currentDeck);
+// var_dump($object->getPlayer()->getPlayerCards());
+// var_dump($object->getPlayer()->getScore());
+// var_dump($object->getDeck()->getCards());
 
 
 
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Something posted
 
     if (isset($_GET['hit'])) {
-        // btnDelete 
-        echo "ASD";
+        // $player->hit($currentDeck);
+        // $_SESSION['blackjack'] = serialize($object);
+        $object->getDealer()->hit($currentDeck);
+        $_SESSION['blackjack'] = serialize($object);
     } else {
-        // Assume btnSubmit 
     }
 }
+
+foreach ($object->getPlayer()->getPlayerCards() as $card) {
+    // echo $card;
+    // echo $card->getUnicodeCharacter(true);
+    // echo '<br>';
+}
+
+foreach ( $object->getDealer()->getPlayerCards() as $card) {
+    // echo $card;
+    echo $card->getUnicodeCharacter(true);
+    echo '<br>';
+}
+
+if ($player->hasLost() == true) {
+    echo "You lost";
+}
+
+// var_dump($object->getDealer()->hit($currentDeck));
+// $object->getDealer()->hit($currentDeck);
+// $_SESSION['blackjack'] = serialize($object);
 
 
 ?>
@@ -77,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <?php ?>
     </div>
     <form action="" method="get">
-    <input type="submit" class="button" name="hit" id="hit" value="hit" />
-    <input type="submit" class="button" name="stand" value="stand" />
+        <input type="submit" class="button" name="hit" id="hit" value="hit" />
+        <input type="submit" class="button" name="stand" value="stand" />
     </form>
 
 </body>

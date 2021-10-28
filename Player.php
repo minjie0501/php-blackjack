@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 
 class Player{
-    private $cards = [];
+    protected $cards = [];
     private $lost = false;
 
     private const BLACK_JACK = 21;
@@ -18,7 +18,6 @@ class Player{
     {
         $total = 0;
         foreach($this->cards as $card){
-            var_dump($card->getValue());
             $total += $card->getValue();
         }
         return $total;
@@ -31,6 +30,11 @@ class Player{
         return $this->cards;
     }
 
+    public function getPlayerCards() : array
+    {
+        return $this->cards;
+    }
+
     public function surrender(): bool
     {
         $this->lost = true;
@@ -40,6 +44,17 @@ class Player{
     public function hasLost(): bool
     {
         return $this->lost;
+    }
+}
+
+class Dealer extends Player
+{
+    public function hit(Deck $deck) : array
+    {   
+        while($this->getScore()<15){
+            parent::hit($deck);
+        }
+        return $this->cards;
     }
 }
 ?>
