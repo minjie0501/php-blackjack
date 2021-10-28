@@ -34,9 +34,12 @@ if (!isset($_SESSION['blackjack'])) {
     $object = unserialize($_SESSION['blackjack']);
 }
 
+$playerCards = [];
+$dealerCards = [];
+
 $currentDeck = $object->getDeck();
 $player = $object->getPlayer();
-
+$dealer = $object->getDealer();
 
 // var_dump($currentDeck);
 // var_dump($object->getPlayer()->getPlayerCards());
@@ -48,26 +51,28 @@ $player = $object->getPlayer();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
     if (isset($_GET['hit'])) {
-        // $player->hit($currentDeck);
-        // $_SESSION['blackjack'] = serialize($object);
+        if($player->getScore() == 21){
+            echo "You won";
+        }
+        else if($player->hasLost() == false){
+            $player->hit($currentDeck);
+            $_SESSION['blackjack'] = serialize($object);
+        }
+    } else if(isset($_GET['stand'])){
         $object->getDealer()->hit($currentDeck);
         $_SESSION['blackjack'] = serialize($object);
-    } else {
+        echo $player->getScore();
+        echo $dealer->getScore();
     }
 }
 
 foreach ($object->getPlayer()->getPlayerCards() as $card) {
-    // echo $card;
-    // echo $card->getUnicodeCharacter(true);
-    // echo '<br>';
+    array_push($playerCards, $card->getUnicodeCharacter(true));
 }
 
-foreach ( $object->getDealer()->getPlayerCards() as $card) {
-    // echo $card;
-    echo $card->getUnicodeCharacter(true);
-    echo '<br>';
+foreach ($object->getDealer()->getPlayerCards() as $card) {
+    array_push($dealerCards, $card->getUnicodeCharacter(true));
 }
 
 if ($player->hasLost() == true) {
@@ -96,10 +101,33 @@ if ($player->hasLost() == true) {
     <div class="user-cards">
         <?php ?>
     </div>
-    <form action="" method="get">
-        <input type="submit" class="button" name="hit" id="hit" value="hit" />
-        <input type="submit" class="button" name="stand" value="stand" />
-    </form>
+    <div class="container">
+        <div class="row row-1">
+            <div class="col-1">
+                <h4>Player</h4>
+                <?php
+                foreach ($playerCards as $card) {
+                    echo $card;
+                }
+                ?>
+            </div>
+            <div class="col-2">
+                <h4>Dealer</h4>
+                <?php
+                foreach ($dealerCards as $card) {
+                    echo $card;
+                }
+                ?>
+            </div>
+        </div>
+        <div class="row row-2">
+            <form action="" method="get">
+                <input type="submit" class="button" name="hit" id="hit" value="hit" />
+                <input type="submit" class="button" name="stand" value="stand" />
+            </form>
+        </div>
+    </div>
+
 
 </body>
 
