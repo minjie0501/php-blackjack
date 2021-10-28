@@ -7,7 +7,10 @@ require 'Deck.php';
 
 $deck = new Deck();
 $deck->shuffle();
+$count = 0;
 foreach($deck->getCards() AS $card) {
     echo $card->getUnicodeCharacter(true);
     echo '<br>';
+    $count++;
 }
+echo $count;

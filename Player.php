@@ -10,7 +10,6 @@ class Player{
 
     public function __construct(Deck $deck)
     {
-        // $deck->drawCard(); // TODO: draw 2 cards
         array_push($this->cards, $deck->drawCard());
         array_push($this->cards, $deck->drawCard());
     }
@@ -19,7 +18,8 @@ class Player{
     {
         $total = 0;
         foreach($this->cards as $card){
-            $total += $card;
+            var_dump($card->getValue());
+            $total += $card->getValue();
         }
         return $total;
     }
