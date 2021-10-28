@@ -17,3 +17,16 @@ span{
 .row-2{
     height: 10vh;
 }
+
+.col{
+    text-align: center;
+}
+
+#btn-new{
+    float: left;
+}
+
+input[type="submit" i]:nth-of-type(1),
+input[type="submit" i]:nth-of-type(2){
+    float: right;
+}

@@ -26,6 +26,10 @@ function whatIsHappening()
 }
 
 // whatIsHappening();
+if(isset($_GET['new'])){
+    unset($_SESSION['blackjack']);
+}
+
 
 if (!isset($_SESSION['blackjack'])) {
     $object = new Blackjack();
@@ -34,12 +38,18 @@ if (!isset($_SESSION['blackjack'])) {
     $object = unserialize($_SESSION['blackjack']);
 }
 
+
+
 $playerCards = [];
 $dealerCards = [];
 
 $currentDeck = $object->getDeck();
 $player = $object->getPlayer();
 $dealer = $object->getDealer();
+$resultMsg = "Good luck!";
+
+$hidden = false;
+
 
 // var_dump($currentDeck);
 // var_dump($object->getPlayer()->getPlayerCards());
@@ -52,18 +62,15 @@ $dealer = $object->getDealer();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['hit'])) {
-        if($player->getScore() == 21){
-            echo "You won";
-        }
-        else if($player->hasLost() == false){
+        if($player->hasLost() == false){
             $player->hit($currentDeck);
             $_SESSION['blackjack'] = serialize($object);
         }
     } else if(isset($_GET['stand'])){
         $object->getDealer()->hit($currentDeck);
         $_SESSION['blackjack'] = serialize($object);
-        echo $player->getScore();
-        echo $dealer->getScore();
+        unset($_SESSION['blackjack']);
+        $hidden = true;
     }
 }
 
@@ -76,9 +83,14 @@ foreach ($object->getDealer()->getPlayerCards() as $card) {
 }
 
 if ($player->hasLost() == true) {
-    echo "You lost";
+    $resultMsg = "You lost";
+    $hidden = true;
 }
 
+if($player->getScore() == 21){
+    $resultMsg = "You won";
+    $hidden = true;
+}
 // var_dump($object->getDealer()->hit($currentDeck));
 // $object->getDealer()->hit($currentDeck);
 // $_SESSION['blackjack'] = serialize($object);
@@ -103,16 +115,21 @@ if ($player->hasLost() == true) {
     </div>
     <div class="container">
         <div class="row row-1">
-            <div class="col-1">
+            <div class="col col-1">
                 <h4>Player</h4>
+                <h5>Score: <?php echo $player->getScore(); ?></h5>
                 <?php
                 foreach ($playerCards as $card) {
                     echo $card;
                 }
                 ?>
             </div>
-            <div class="col-2">
+            <div class="col col-2">
+                <?php echo "<h2>$resultMsg</h2>"; ?>
+            </div>
+            <div class="col col-3">
                 <h4>Dealer</h4>
+                <h5>Score: <?php echo $dealer->getScore(); ?></h5>
                 <?php
                 foreach ($dealerCards as $card) {
                     echo $card;
@@ -122,8 +139,11 @@ if ($player->hasLost() == true) {
         </div>
         <div class="row row-2">
             <form action="" method="get">
-                <input type="submit" class="button" name="hit" id="hit" value="hit" />
-                <input type="submit" class="button" name="stand" value="stand" />
+                <input type="submit" class="button" name="hit" <?php if($hidden)echo "hidden='hidden'"; ?> value="hit" />
+                <input type="submit" class="button" name="stand" <?php if($hidden)echo "hidden='hidden'"; ?> value="stand" />
+            </form>
+            <form action="/php-blackjack/" method="get">
+                <input type="submit" class="button" name="new" id="btn-new" value="new" />
             </form>
         </div>
     </div>
