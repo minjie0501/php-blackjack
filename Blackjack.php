@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 declare(strict_types=1);
 
 
@@ -31,5 +32,18 @@ class Blackjack
         return $this->deck;
     }
 
+    public function compareScore($player, $dealer): string
+    {
+        if ($this->player->hasLost() == false && $this->dealer->hasLost() == false) {
+            if ($this->player->getScore() > $this->dealer->getScore()) {
+                return "player";
+            } else if ($this->player->getScore() == $this->dealer->getScore()) {
+                return "tie";
+            } else {
+                return "dealer";
+            }
+        } else {
+            return "player";
+        }
+    }
 }
-?>

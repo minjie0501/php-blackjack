@@ -11,25 +11,9 @@ require 'Blackjack.php';
 
 session_start();
 
-
-//unset($_SESSION['blackjack']); // NOTE: delete this
-function whatIsHappening()
-{
-    echo '<h2>$_GET</h2>';
-    var_dump($_GET);
-    echo '<h2>$_POST</h2>';
-    var_dump($_POST);
-    echo '<h2>$_COOKIE</h2>';
-    var_dump($_COOKIE);
-    echo '<h2>$_SESSION</h2>';
-    var_dump($_SESSION);
-}
-
-// whatIsHappening();
-if(isset($_GET['new'])){
+if (isset($_GET['new'])) {
     unset($_SESSION['blackjack']);
 }
-
 
 if (!isset($_SESSION['blackjack'])) {
     $object = new Blackjack();
@@ -38,41 +22,40 @@ if (!isset($_SESSION['blackjack'])) {
     $object = unserialize($_SESSION['blackjack']);
 }
 
-
-
 $playerCards = [];
 $dealerCards = [];
-
 $currentDeck = $object->getDeck();
 $player = $object->getPlayer();
 $dealer = $object->getDealer();
 $resultMsg = "Good luck!";
-
+$showDealerCards = false;
 $hidden = false;
-
-
-// var_dump($currentDeck);
-// var_dump($object->getPlayer()->getPlayerCards());
-// var_dump($object->getPlayer()->getScore());
-// var_dump($object->getDeck()->getCards());
-
-
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['hit'])) {
-        if($player->hasLost() == false){
+        if ($player->hasLost() == false) {
             $player->hit($currentDeck);
             $_SESSION['blackjack'] = serialize($object);
         }
-    } else if(isset($_GET['stand'])){
+    } else if (isset($_GET['stand'])) {
         $object->getDealer()->hit($currentDeck);
         $_SESSION['blackjack'] = serialize($object);
         unset($_SESSION['blackjack']);
         $hidden = true;
+        $showDealerCards = true;
+        if ($object->compareScore($player, $dealer) == "player") {
+            $resultMsg = "You won!";
+        } else if ($object->compareScore($player, $dealer) == "dealer") {
+            $resultMsg = "You lost!";
+        } else {
+            $resultMsg = "Tie!";
+        }
+    } else if (isset($_GET['surrender'])) {
+        $hidden = true;
+        $resultMsg = "You lost!";
     }
 }
+
 
 foreach ($object->getPlayer()->getPlayerCards() as $card) {
     array_push($playerCards, $card->getUnicodeCharacter(true));
@@ -83,18 +66,22 @@ foreach ($object->getDealer()->getPlayerCards() as $card) {
 }
 
 if ($player->hasLost() == true) {
-    $resultMsg = "You lost";
+    $resultMsg = "You lost!";
     $hidden = true;
 }
 
-if($player->getScore() == 21){
-    $resultMsg = "You won";
+if ($dealer->getScore() == 21 && $player->getScore() == 21) {
+    $resultMsg = "Tie!";
     $hidden = true;
+    $showDealerCards = true;
+} else if ($player->getScore() == 21) {
+    $resultMsg = "You won!";
+    $hidden = true;
+} else if ($dealer->getScore() == 21) {
+    $resultMsg = "You lost!";
+    $hidden = true;
+    $showDealerCards = true;
 }
-// var_dump($object->getDealer()->hit($currentDeck));
-// $object->getDealer()->hit($currentDeck);
-// $_SESSION['blackjack'] = serialize($object);
-
 
 ?>
 
@@ -129,18 +116,24 @@ if($player->getScore() == 21){
             </div>
             <div class="col col-3">
                 <h4>Dealer</h4>
-                <h5>Score: <?php echo $dealer->getScore(); ?></h5>
-                <?php
-                foreach ($dealerCards as $card) {
-                    echo $card;
+                <h5>Score: <?php 
+                echo ($showDealerCards) ? $dealer->getScore() :  $object->getDealer()->getPlayerCards()[0]->getValue();?>
+                </h5><?php
+                if ($showDealerCards == false) {
+                    echo $dealerCards[0];
+                } else {
+                    foreach ($dealerCards as $card) {
+                        echo $card;
+                    }
                 }
                 ?>
             </div>
         </div>
         <div class="row row-2">
             <form action="" method="get">
-                <input type="submit" class="button" name="hit" <?php if($hidden)echo "hidden='hidden'"; ?> value="hit" />
-                <input type="submit" class="button" name="stand" <?php if($hidden)echo "hidden='hidden'"; ?> value="stand" />
+                <input type="submit" class="button" name="hit" <?php if ($hidden) echo "hidden='hidden'"; ?> value="hit" />
+                <input type="submit" class="button" name="stand" <?php if ($hidden) echo "hidden='hidden'"; ?> value="stand" />
+                <input type="submit" class="button" name="surrender" <?php if ($hidden) echo "hidden='hidden'"; ?> value="surrender" />
             </form>
             <form action="/php-blackjack/" method="get">
                 <input type="submit" class="button" name="new" id="btn-new" value="new" />
