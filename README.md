@@ -25,8 +25,8 @@ Create a blackjack game using OOP in PHP.
   - At the end display the winner
 
 ## Extra challenge
-- :heavy_check_mark: Implement a betting system (TODO: input validation for bet amount)
-- :heavy_check_mark: Implement the blackjack first turn rule (If the player draws 21 the first turn: he directly wins. If the dealer draws 21 the first turn, he wins. If both draw it, it is a tie.)
+ :heavy_check_mark: Implement a betting system (TODO: input validation for bet amount) \
+ :heavy_check_mark: Implement the blackjack first turn rule (If the player draws 21 the first turn: he directly wins. If the dealer draws 21 the first turn, he wins. If both draw it, it is a tie.)
 
 
 
