@@ -20,12 +20,12 @@ if (isset($_SESSION['chips'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackjack</title>
-    <link rel="stylesheet" href="main-style.css">
+    <link rel="stylesheet" href="index-style.css">
 </head>
 <body>
-    Enter the amount you want to bet out of your <?php echo $chips?> chips!
+    <h1>Enter the amount you want to bet out of your <?php echo $chips?> chips!</h1>
     <form action="/php-blackjack/game.php">
-    <input type="text" name="bet">
+    <input type="text" name="bet" id="bet"><br>
     <input type="submit">
 </form>
 </body>

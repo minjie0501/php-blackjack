@@ -144,15 +144,15 @@ if ($dealer->getScore() == 21 && $player->getScore() == 21) {
         </div>
         <div class="row row-2">
             <form action="" method="get">
-                <input type="submit" class="button" name="hit" <?php if ($hidden) echo "hidden='hidden'"; ?> value="hit" />
-                <input type="submit" class="button" name="stand" <?php if ($hidden) echo "hidden='hidden'"; ?> value="stand" />
-                <input type="submit" class="button" name="surrender" <?php if ($hidden) echo "hidden='hidden'"; ?> value="surrender" />
+                <input type="submit" class="button" name="hit" <?php if ($hidden) echo "style='display: none'"; ?> value="Hit" />
+                <input type="submit" class="button" name="stand" <?php if ($hidden) echo "style='display: none'"; ?> value="Stand" />
+                <input type="submit" class="button" name="surrender" <?php if ($hidden) echo "style='display: none'"; ?> value="Surrender" />
             </form>
             <form action="/php-blackjack/" method="post">
                 <input type="submit" class="button" name="playagain" id="btn-new" value="Play again" />
             </form>
             <form action="/php-blackjack/" method="post">
-                <input type="submit" class="button" name="newgame" id="btn-new" value="newgame" />
+                <input type="submit" class="button" name="newgame" id="btn-new" value="New game" />
             </form>
         </div>
     </div>

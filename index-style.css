@@ -1,52 +1,25 @@
-body{
-    background-image: url("./img/background.png");
-    display: cover;
-    background-size: 100%;
-    color: rgba(255, 255, 255, 0.849);
+body {
+  background-image: url("./img/background.png");
+  display: cover;
+  background-size: 100%;
+  color: rgba(255, 255, 255, 0.849);
+  text-align: center;
+  margin-top: 20%;
 }
 
-span{
-    font-size: 10rem;
+input[type="text"] {
+  border: 1px solid rgb(18, 110, 56);
+  border-radius: 4px;
+  height: 2rem;
 }
 
-.row{
-    display:flex;
-}
-
-.row > * {
-    flex-basis: 100%;
-}
-
-.row-1{
-    height: 50vh;
-}
-
-.row-2{
-    height: 10vh;
-}
-
-.col{
-    text-align: center;
-}
-
-#btn-new{
-    float: left;
-}
-
-input[type="submit" i]:nth-of-type(1),
-input[type="submit" i]:nth-of-type(2),
-input[type="submit" i]:nth-of-type(3){
-    float: right;
-}
-
-
-
-.button {
+input[type="submit"] {
+  margin-top: 0.5rem !important;
   background-color: rgb(107, 103, 89);
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -69,7 +42,7 @@ input[type="submit" i]:nth-of-type(3){
   margin-left: 5px;
 }
 
-.button:hover,
-.button:focus {
+input[type="submit"]:hover,
+input[type="submit"]:focus {
   background-color: rgb(66, 70, 58);
-} 
+}
