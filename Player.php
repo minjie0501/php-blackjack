@@ -6,12 +6,13 @@ class Player{
     protected $cards = [];
     private $lost = false;
 
-    private const BLACK_JACK = 21;
+    protected const BLACK_JACK = 21;
 
     public function __construct(Deck $deck)
     {
-        array_push($this->cards, $deck->drawCard());
-        array_push($this->cards, $deck->drawCard());
+        for ($i=0; $i < 2; $i++) { 
+            array_push($this->cards, $deck->drawCard());
+        }
     }
 
     public function getScore(): int
