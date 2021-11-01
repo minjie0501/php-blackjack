@@ -10,6 +10,20 @@ require 'Blackjack.php';
 
 session_start();
 
+function handleError($betChips){
+    if(strlen($betChips) < 1){
+        header("Location: /php-blackjack/index.php?error=error-1"); // error-1
+        die();
+    }else if($betChips < 5){
+        header("Location: /php-blackjack/index.php?error=error-2"); // error-2
+        die();
+    }
+    else if($betChips > $_SESSION['chips']){
+        header("Location: /php-blackjack/index.php?error=error-3"); // error-3
+        die();
+    }
+}
+
 if (isset($_POST['playagain'])) {
     unset($_SESSION['blackjack']);
 }
@@ -18,9 +32,8 @@ if (isset($_GET['bet'])) {
     unset($_SESSION['blackjack']);
     $hidden = false;
     $betChips = $_GET['bet'];
-    $_SESSION['betchips'] = $betChips;
-}else{
-    $betChips = 5;
+    handleError($betChips);
+    $_SESSION['betchips'] = (int)$betChips;
 }
 
 if (!isset($_SESSION['blackjack'])) {
@@ -149,7 +162,7 @@ if ($dealer->getScore() == 21 && $player->getScore() == 21) {
                 <input type="submit" class="button" name="surrender" <?php if ($hidden) echo "style='display: none'"; ?> value="Surrender" />
             </form>
             <form action="/php-blackjack/" method="post">
-                <input type="submit" class="button" name="playagain" id="btn-new" value="Play again" />
+                <input type="submit" class="button" name="playagain" id="btn-new" <?php if (!$hidden) echo "style='display: none'"; ?> value="Play again" />
             </form>
             <form action="/php-blackjack/" method="post">
                 <input type="submit" class="button" name="newgame" id="btn-new" value="New game" />
