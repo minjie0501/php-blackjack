@@ -10,15 +10,15 @@ require 'Blackjack.php';
 
 session_start();
 
-function handleError($betChips){
-    if(strlen($betChips) < 1){
+function handleError($betChips)
+{
+    if (strlen($betChips) < 1) {
         header("Location: /php-blackjack/index.php?error=error-1"); // error-1
         die();
-    }else if($betChips < 5){
+    } else if ($betChips < 5) {
         header("Location: /php-blackjack/index.php?error=error-2"); // error-2
         die();
-    }
-    else if($betChips > $_SESSION['chips']){
+    } else if ($betChips > $_SESSION['chips']) {
         header("Location: /php-blackjack/index.php?error=error-3"); // error-3
         die();
     }
@@ -142,17 +142,17 @@ if ($dealer->getScore() == 21 && $player->getScore() == 21) {
             </div>
             <div class="col col-3">
                 <h2>Dealer</h2>
-                <h3>Score: <?php 
-                echo ($showDealerCards) ? $dealer->getScore() :  $object->getDealer()->getPlayerCards()[0]->getValue();?>
+                <h3>Score: <?php
+                            echo ($showDealerCards) ? $dealer->getScore() :  $object->getDealer()->getPlayerCards()[0]->getValue(); ?>
                 </h3><?php
-                if ($showDealerCards == false) {
-                    echo $dealerCards[0];
-                } else {
-                    foreach ($dealerCards as $card) {
-                        echo $card;
-                    }
-                }
-                ?>
+                        if ($showDealerCards == false) {
+                            echo $dealerCards[0];
+                        } else {
+                            foreach ($dealerCards as $card) {
+                                echo $card;
+                            }
+                        }
+                        ?>
             </div>
         </div>
         <div class="row row-2">
@@ -161,13 +161,22 @@ if ($dealer->getScore() == 21 && $player->getScore() == 21) {
                 <input type="submit" class="button" name="stand" <?php if ($hidden) echo "style='display: none'"; ?> value="Stand" />
                 <input type="submit" class="button" name="surrender" <?php if ($hidden) echo "style='display: none'"; ?> value="Surrender" />
             </form>
-            <form action="/php-blackjack/" method="post">
-                <input type="submit" class="button" name="playagain" id="btn-new" <?php if (!$hidden) echo "style='display: none'"; ?> value="Play again" />
-            </form>
-            <form action="/php-blackjack/" method="post">
-                <input type="submit" class="button" name="newgame" id="btn-new" value="New game" />
-            </form>
         </div>
+        <div class="row row-3">
+            <?php
+            if ($hidden) {
+                echo "<form action='/php-blackjack/' method='post'>
+                    <input type='submit' class='button' name='playagain' id='btn-new'  value='Play again' />
+                </form>";
+            }
+            ?>
+            <div>
+                <form action='/php-blackjack/' method='post'>
+                    <input type='submit' class='button' name='newgame' id='btn-new' value='New game' />
+                </form>
+            </div>
+        </div>
+
     </div>
 
 

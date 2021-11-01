@@ -10,7 +10,14 @@ body {
 input[type="text"] {
   border: 1px solid rgb(18, 110, 56);
   border-radius: 4px;
-  height: 2rem;
+  height: 40px;
+  width: 200px;
+  text-align: center;
+  /* font-weight: bold; */
+  /* font-size: 1rem; */
+  box-sizing:border-box;
+  margin: 8px 0px 0px 5px;
+  padding: 10px 16px;
 }
 
 input[type="submit"] {
@@ -40,6 +47,7 @@ input[type="submit"] {
   -webkit-user-select: none;
   touch-action: manipulation;
   margin-left: 5px;
+  min-width: 200px;
 }
 
 input[type="submit"]:hover,
